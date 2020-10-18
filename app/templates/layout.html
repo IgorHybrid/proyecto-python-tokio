@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProyectoPython</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/bootstrap.min.css') }}">
+</head>
+<body>
+    {% include "includes/_navbar.html" %}
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='plugins/bootstrap/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
