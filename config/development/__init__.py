@@ -1,7 +1,11 @@
 import os
 
 DEBUG = True
-SECRET_KEY = 'my precious'
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+ENVIRONMENT = "development"
 HOST = 'localhost'
 PORT = int(os.environ.get('PORT', 5000))
+
+## DATABASE
+MONGO_HOSTNAME = "localhost"
+MONGO_PORT = 27017
+MONGO_APP_DATABASE = "proyecto"
