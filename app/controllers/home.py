@@ -1,11 +1,6 @@
 from flask import render_template, Blueprint
 
-blueprint = Blueprint('pages', __name__)
-
-
-################
-#### routes ####
-################
+blueprint = Blueprint('home', __name__)
 
 
 @blueprint.route('/')

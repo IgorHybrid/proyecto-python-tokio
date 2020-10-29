@@ -2,14 +2,18 @@ import logging
 
 from flask import Flask, request as req
 
-from app.controllers import home
+def create_app(config_filename=None):
+    app = Flask(__name__, instance_relative_config=True)
 
+    if config_filename is None:
+        config_filename = 'config.development'
 
-def create_app(config_filename):
-    app = Flask(__name__)
     app.config.from_object(config_filename)
 
-    app.register_blueprint(home.blueprint)
+    from . import db
+    db.init_app(app)
+
+    app = init_bp(app)
 
     app.logger.setLevel(logging.NOTSET)
 
@@ -21,3 +25,10 @@ def create_app(config_filename):
         return resp
 
     return app
+
+def init_bp(app_flask):
+    with app_flask.app_context():
+        from app.controllers import home
+
+        app_flask.register_blueprint(home.blueprint)
+        return app_flask
