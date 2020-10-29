@@ -1,9 +1,12 @@
 from datetime import datetime
 from bson import ObjectId
 
+from app.db import get_db
 
 
 class Database(object):
+    def __init__(self):
+        self.db = get_db()
 
     def insert(self, element, collection_name):
         element["created"] = datetime.now()
