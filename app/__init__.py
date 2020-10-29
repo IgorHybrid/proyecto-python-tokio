@@ -29,6 +29,8 @@ def create_app(config_filename=None):
 def init_bp(app_flask):
     with app_flask.app_context():
         from app.controllers import home
+        from app.controllers import role
 
         app_flask.register_blueprint(home.blueprint)
+        app_flask.register_blueprint(role.blueprint)
         return app_flask
