@@ -1,4 +1,5 @@
 from datetime import datetime
+import bson
 
 
 class Validator(object):
@@ -13,6 +14,8 @@ class Validator(object):
             return type(element) == float
         if type(desired_type) == list:
             return (element in desired_type)
+        if desired_type == "objectid":
+            return bson.objectid.ObjectId.is_valid(element)
         raise ValueError("Invalid value for desired type")
 
     def validateTypes(self, element, fields):
