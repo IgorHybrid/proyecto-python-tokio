@@ -21,14 +21,18 @@ def init_db():
     role_col.drop()
 
     from app.models.role import Role
+    from app.models.user import User
 
     role = Role()
+    user = User()
 
-    role.create({"name": "admin"})
-    role.create({"name": "cliente"})
-    role.create({"name": "proveedor"})
+    admin = role.create({"name": "admin"})
+    cliente = role.create({"name": "cliente"})
+    proveedor = role.create({"name": "proveedor"})
 
-
+    user.create({"username": "admin", "password": "admin", "email":"admin@gmail.com", "_role":admin.inserted_id})
+    user.create({"username": "cliente", "password": "cliente", "email": "cliente@gmail.com", "_role": cliente.inserted_id})
+    user.create({"username": "proveedor", "password": "proveedor", "email": "proveedor@gmail.com", "_role": proveedor.inserted_id})
 def init_app(app):
     app.cli.add_command(init_db_command)
 
