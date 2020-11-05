@@ -2,6 +2,7 @@ import logging
 
 from flask import Flask, request as req
 
+
 def create_app(config_filename=None):
     app = Flask(__name__, instance_relative_config=True)
 
@@ -26,11 +27,12 @@ def create_app(config_filename=None):
 
     return app
 
+
 def init_bp(app_flask):
     with app_flask.app_context():
         from app.controllers import home
-        from app.controllers import role
+        from app.controllers import auth
 
         app_flask.register_blueprint(home.blueprint)
-        app_flask.register_blueprint(role.blueprint)
+        app_flask.register_blueprint(auth.blueprint)
         return app_flask

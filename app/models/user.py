@@ -28,7 +28,6 @@ class User(object):
         # Fields optional for UPDATE
         self.update_optional_fields = []
 
-
     def create(self, user):
         # Validator will throw error if invalid
         user["password"] = generate_password_hash(user["password"])
@@ -36,19 +35,34 @@ class User(object):
         res = self.db.insert(user, self.collection_name)
         return res
 
+    def find_one(self, user, projection=None):
+        return self.db.find_one(user, self.collection_name, projection)
+
+    def check_credentials(self, user):
+        found_user = self.find_one({'username': user["username"]})
+
+        if not found_user:
+            raise CredentialsError('Username not found')
+        elif not check_password_hash(found_user['password'], user["password"]):
+            raise CredentialsError('Incorrect password')
+        else:
+            return found_user
 
     def find(self, user, projection=None):  # find all
         return self.db.find(user, self.collection_name, projection)
 
-
     def find_by_id(self, id):
         return self.db.find_by_id(id, self.collection_name)
-
 
     def update(self, id, user):
         self.validator.validate(user, self.fields, self.update_required_fields, self.update_optional_fields)
         return self.db.update(id, user, self.collection_name)
 
-
     def delete(self, id):
         return self.db.delete(id, self.collection_name)
+
+
+class CredentialsError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+        super().__init__(self.msg)
