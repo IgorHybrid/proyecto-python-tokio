@@ -32,6 +32,14 @@ class Database(object):
 
         return found
 
+    def find_one(self, criteria, collection_name, projection=None):
+        if "_id" in criteria:
+            criteria["_id"] = ObjectId(criteria["_id"])
+
+        found = self.db[collection_name].find_one(filter=criteria, projection=projection)
+
+        return found
+
     def find_by_id(self, id, collection_name):
         found = self.db[collection_name].find_one({"_id": ObjectId(id)})
 
