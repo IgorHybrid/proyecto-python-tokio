@@ -1,10 +1,11 @@
 import functools
 
 from flask import Blueprint, jsonify, request, render_template, g, url_for, redirect, session, flash
+from bson import ObjectId
 
 from app.models.role import Role
 from app.models.user import User
-from app.forms import LoginForm
+from app.forms import LoginForm, RegisterForm
 
 
 blueprint = Blueprint('auth', __name__, url_prefix='/auth')
@@ -59,6 +60,42 @@ def login():
             except Exception as e:
                 flash(str(e), 'danger')
         return render_template('login.html', form=form)
+    else:
+        return redirect(url_for('home.home'))
+
+
+@blueprint.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm(request.form)
+    if g.user is None:
+        if request.method == 'POST' and form.validate():
+            username = form.username.data
+            password = form.password.data
+            email = form.email.data
+            role = form.roles_input.data
+
+            found_user = user.find({"username": username})
+
+            if not found_user:
+                try:
+                    user_fields = {
+                        "username": username,
+                        "password": password,
+                        "email": email,
+                        "_role": ObjectId(role)
+                    }
+                    id = user.create(user_fields)
+
+                    session.clear()
+                    session['user_id'] = str(id.inserted_id)
+
+                    return redirect(url_for('home.home'))
+                except Exception as e:
+                    flash(str(e), 'danger')
+
+            else:
+                flash('User already exists', 'danger')
+        return render_template('register.html', form=form)
     else:
         return redirect(url_for('home.home'))
 
