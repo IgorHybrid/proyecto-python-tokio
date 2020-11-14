@@ -35,7 +35,6 @@ class RegisterForm(Form):
         validators.DataRequired()
     ], choices=roles)
 
-    print(roles_input)
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message="Passwords do not match")
