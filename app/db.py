@@ -22,17 +22,43 @@ def init_db():
 
     from app.models.role import Role
     from app.models.user import User
+    from app.models.product import Product
 
     role = Role()
     user = User()
+    product = Product()
 
-    admin = role.create({"name": "admin"})
-    cliente = role.create({"name": "cliente"})
-    proveedor = role.create({"name": "proveedor"})
+    admin_role = role.create({"name": "admin"})
+    cliente_role = role.create({"name": "cliente"})
+    proveedor_role = role.create({"name": "proveedor"})
 
-    user.create({"username": "admin", "password": "admin", "email":"admin@gmail.com", "_role":admin.inserted_id})
-    user.create({"username": "cliente", "password": "cliente", "email": "cliente@gmail.com", "_role": cliente.inserted_id})
-    user.create({"username": "proveedor", "password": "proveedor", "email": "proveedor@gmail.com", "_role": proveedor.inserted_id})
+    user.create({"username": "admin", "password": "admin", "email":"admin@gmail.com", "_role":admin_role.inserted_id})
+    user.create({"username": "cliente", "password": "cliente", "email": "cliente@gmail.com", "_role": cliente_role.inserted_id})
+    proveedor = user.create({"username": "proveedor", "password": "proveedor", "email": "proveedor@gmail.com", "_role": proveedor_role.inserted_id})
+
+    product.create({
+        "name": "Intel Core i5-1130G7",
+        "description": "Procesador Intel Core",
+        "place": "Galdakao(Bizkaia)",
+        "price": 100.00,
+        "shopPrice": 129.99,
+        "maxStock": 320,
+        "currentStock": 200,
+        "_owner": proveedor.inserted_id
+    })
+
+    product.create({
+        "name": "NZXT Aer RGB 2 120mm",
+        "description": "Ventilador con LED",
+        "place": "Galdakao(Bizkaia)",
+        "price": 20.00,
+        "shopPrice": 29.99,
+        "maxStock": 320,
+        "currentStock": 300,
+        "colors": ["verde", "rojo", "morado"],
+        "_owner": proveedor.inserted_id
+    })
+
 def init_app(app):
     app.cli.add_command(init_db_command)
 

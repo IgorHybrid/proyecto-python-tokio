@@ -16,8 +16,9 @@ class Database(object):
 
     def find(self, criteria, collection_name, projection=None, sort=None, limit=0, cursor=False):  # find all from db
 
-        if "_id" in criteria:
-            criteria["_id"] = ObjectId(criteria["_id"])
+        if criteria is not None:
+            if "_id" in criteria:
+                criteria["_id"] = ObjectId(criteria["_id"])
 
         found = self.db[collection_name].find(filter=criteria, projection=projection, limit=limit, sort=sort)
 
@@ -29,6 +30,9 @@ class Database(object):
         for i in range(len(found)):  # to serialize object id need to convert string
             if "_id" in found[i]:
                 found[i]["_id"] = str(found[i]["_id"])
+            if "_owner" in found[i]:
+                found[i]["_owner"] = str(found[i]["_owner"])
+
 
         return found
 
