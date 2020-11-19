@@ -17,8 +17,12 @@ def init_db():
     db = get_db()
 
     role_col = db['role']
+    user_col = db['user']
+    product_col = db['product']
 
     role_col.drop()
+    user_col.drop()
+    product_col.drop()
 
     from app.models.role import Role
     from app.models.user import User
