@@ -113,7 +113,12 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = user.find_by_id(user_id)
+        user_found = user.find_by_id(user_id)
+        role_found = role.find_by_id(user_found["_role"])
+
+        user_found["_role"] = role_found
+
+        g.user = user_found
 
 
 def login_required(view):
