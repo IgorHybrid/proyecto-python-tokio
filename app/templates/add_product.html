@@ -1,0 +1,61 @@
+{% from "includes/_formhelpers.html" import render_field %}
+{% extends "layout.html" %}
+
+{% block body %}
+<main class="my-form">
+    <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">Añadir Producto</div>
+                        <div class="card-body">
+                            <form name="my-form" action="{{url_for('products.add_product')}}" method="post">
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label text-md-right">Nombre del producto</label>
+                                        <div class="col-md-6">
+                                            {{render_field(form.name, class_="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label text-md-right">Descripcion</label>
+                                        <div class="col-md-6">
+                                            {{render_field(form.description, class_="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label text-md-right">Lugar de almacenaje</label>
+                                        <div class="col-md-6">
+                                            {{render_field(form.place, class_="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label text-md-right">Precio</label>
+                                        <div class="col-md-6">
+                                            {{render_field(form.price, class_="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label text-md-right">Tamaño del producto</label>
+                                        <div class="col-md-6">
+                                            {{render_field(form.max_stock, class_="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 col-form-label text-md-right">Colores</label>
+                                        <div class="col-md-6">
+                                            {{render_field(form.colors, class_="form-control")}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                        Insertar
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

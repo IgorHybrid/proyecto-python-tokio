@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, SelectField, PasswordField, validators
+from wtforms import Form, StringField, SelectField, DecimalField, SelectMultipleField, PasswordField, validators
 
 from app.models.role import Role
 
@@ -40,3 +40,54 @@ class RegisterForm(Form):
         validators.EqualTo('confirm', message="Passwords do not match")
     ])
     confirm = PasswordField('Confirm')
+
+
+class CustomDecimalField(DecimalField):
+    def process_formdata(self, valuelist):
+        if valuelist:
+            try:
+                self.data = float(valuelist[0].replace(',', '.'))
+            except ValueError:
+                self.data = None
+                raise ValueError(self.gettext('Not a valid float value'))
+
+
+class AddProductForm(Form):
+
+
+    name = StringField('Name', [
+        validators.DataRequired(),
+        validators.length(min=4, max=50)
+    ])
+
+    description = StringField('Description', [
+        validators.DataRequired(),
+        validators.length(min=4, max=200)
+    ])
+
+    place = StringField('Place', [
+        validators.DataRequired(),
+        validators.length(min=4, max=50)
+    ])
+
+    price = CustomDecimalField('Price', [
+        validators.DataRequired(),
+        validators.NumberRange(min=1.00)
+    ])
+
+    max_stock = SelectField('Max Stock', [
+        validators.DataRequired()
+    ], choices = [
+        ("small", "Pequeño"),
+        ("medium", "Mediano"),
+        ("large", "Grande")
+    ])
+
+    colors = SelectMultipleField('Colors', [
+        validators.optional()
+    ], choices=[
+        ("verde", "Verde"),
+        ("rojo", "Rojo"),
+        ("morado", "Morado"),
+        ("amarillo", "Amarillo")
+    ])

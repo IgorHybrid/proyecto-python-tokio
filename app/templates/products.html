@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="prod-table">
+    <div class="row d-flex justify-content-end">
+        {% if g.user['_role']['name'] == 'proveedor' or g.user['_role']['name'] == 'admin' %}
+           <a href="{{url_for('products.add_product')}}" class="btn btn-success active" role="button" aria-pressed="true">Nuevo Producto</a>
+        {% endif %}
+    </div>
+    <div class="row">
+      <table class="table table-striped">
+          <caption>Productos disponibles</caption>
+          <thead>
+              <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Lugar</th>
+                    <th scope="col">Unidades</th>
+                    <th scope="col">Unidades máximas</th>
+                    <th scope="col">Precio Proveedor</th>
+                    <th scope="col">Precio en tienda</th>
+                    <th scope="col">Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+                <tr id={{product['_id']}}>
+                    <th scope="row">{{ product['name'] }}</th>
+                    <td>{{ product['place'] }}</td>
+                    <td>{{ product['currentStock'] }}</td>
+                    <td>{{ product['maxStock'] }}</td>
+                    <td>{{ product['price'] }}</td>
+                    <td>{{ product['shopPrice'] }}</td>
+                    <td>
+                        {% if g.user['_id'] == product['_owner'] or g.user['_role']['name'] == 'admin' %}
+                            <a class="action">Editar</a>
+                            <a class="action">Borrar</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

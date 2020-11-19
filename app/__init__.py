@@ -32,7 +32,10 @@ def init_bp(app_flask):
     with app_flask.app_context():
         from app.controllers import home
         from app.controllers import auth
+        from app.controllers import products
 
         app_flask.register_blueprint(home.blueprint)
         app_flask.register_blueprint(auth.blueprint)
+        app_flask.register_blueprint(products.blueprint)
+
         return app_flask
